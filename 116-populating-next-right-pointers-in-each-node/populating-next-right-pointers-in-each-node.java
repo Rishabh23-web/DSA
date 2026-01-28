@@ -22,30 +22,20 @@ class Node {
 */
 
 class Solution {
+    public void traverse(Node node){
+        if(node==null)return ;
+        if(node.left !=null){
+            node.left.next=node.right;
+            if(node.next !=null){
+                node.right.next = node.next.left;
+            }
+        }
+        traverse(node.left);
+        traverse(node.right);
+    }
     public Node connect(Node root) {
-        Queue <Node> q= new LinkedList<>();
-        if (root==null || root.left==null)return root;
-        q.offer(root);
-        q.offer(null);
-        Node prev =null;
-        while(!q.isEmpty()){
-            Node curr =q.peek();
-            q.poll();
-            if(curr==null){
-                if(q.size()==0)break;
-                q.offer(null);
-            }else{
-                if(curr.left !=null){
-                    q.offer(curr.left);
-                }
-
-                if(curr.right !=null){
-                    q.offer(curr.right);
-                }
-                if(prev!=null){
-                    prev.next=curr;
-                }
-            }prev =curr;
-        }return root;
+        Node temp =root;
+        traverse(temp);
+        return temp;
     }
 }
