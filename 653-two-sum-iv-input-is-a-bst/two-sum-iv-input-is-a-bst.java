@@ -14,21 +14,43 @@
  * }
  */
 class Solution {
-    public void inorder(TreeNode root,List<Integer> inorder){
-            if(root==null)return;
-            inorder(root.left,inorder);
-            inorder.add(root.val);
-            inorder(root.right,inorder);
+    public class BSTIterator{
+        private Stack<TreeNode> stk = new Stack<>();
+        boolean reverse = true;
+
+        public BSTIterator(TreeNode root, boolean isReverse){
+            reverse = isReverse;
+            pushAll(root);
+        }
+
+        public boolean hasNext(){
+            return stk.isEmpty();
+        }
+
+        public int next(){
+            TreeNode tempNode = stk.pop();
+            if(reverse==false)pushAll(tempNode.right);
+            else pushAll(tempNode.left);
+            return tempNode.val;
+        }
+        private void pushAll(TreeNode root){
+            while(root !=null){
+                stk.push(root);
+                if(reverse==true)root = root.right;
+                else root= root.left;
+            }
+        }
     }
     public boolean findTarget(TreeNode root, int k) {
-        List<Integer> inorder =new ArrayList<>();
-        inorder(root,inorder);
-        int i=0;
-        int j=inorder.size()-1;
+        if(root==null)return false;
+        BSTIterator l = new BSTIterator(root,false);
+        BSTIterator r = new BSTIterator(root,true);
+        int i=l.next();
+        int j=r.next();
         while(i<j){
-            if(inorder.get(i)+inorder.get(j)==k)return true;
-            if(inorder.get(i)+inorder.get(j)<k)i++;
-            else j--;    
+            if(i+j==k)return true;
+            if(i+j<k)i=l.next();
+            else j=r.next();    
         }return false;
     }
 }
