@@ -19,14 +19,13 @@ class Node {
 */
 
 class Solution {
-    HashMap<Node,Node> mp;
-    public void DFS(Node node,Node clone){
+    public void DFS(Node node,Node clone,HashMap<Node,Node> mp ){
         for(Node n : node.neighbors){
             if(!mp.containsKey(n)){
                 Node cloneNode = new Node(n.val);
                 mp.put(n,cloneNode);
                 clone.neighbors.add(cloneNode);
-                DFS(n,cloneNode);
+                DFS(n,cloneNode,mp);
             }
             else{
                 clone.neighbors.add(mp.get(n));
@@ -35,10 +34,10 @@ class Solution {
     }
     public Node cloneGraph(Node node) {
         if(node==null)return null;
-        mp = new HashMap<>();
+        HashMap<Node,Node> mp = new HashMap<>();
         Node clone = new Node(node.val);
         mp.put(node,clone);
-        DFS(node,clone);
+        DFS(node,clone,mp);
         return clone;
     }
 }
