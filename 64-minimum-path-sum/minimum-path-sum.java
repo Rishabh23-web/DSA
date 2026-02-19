@@ -12,7 +12,9 @@ class Solution {
     }
 
     public int minPathSum(int[][] grid) {
-        int t[][] =new int[201][201];
+        int m=grid.length;
+        int n=grid[0].length;
+        int t[][] =new int[m][n];
         for(int[] row: t) Arrays.fill(row,-1);
         return solve(grid,0,0,t);
     }
