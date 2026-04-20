@@ -1,31 +1,31 @@
 class Solution {
+    private int [][]t;
+    public boolean solve(String s,int i,int j){
+        if(i>=j)return true;
+        if(t[i][j]!=-1)return t[i][j]==1;
+        if(s.charAt(i)== s.charAt(j))t[i][j]= solve(s,i+1,j-1)?1:0;
+        else t[i][j]=0;
+        return t[i][j]==1;
+    }
+
     public String longestPalindrome(String s) {
-        int n = s.length();
-        if(n<=1) return s;
-
-        String LPS = "";
-        for(int i=1; i< n ;i++){
-            int low =i;
-            int high = i;
-            while(s.charAt(low)==s.charAt(high)){
-                low--;
-                high++;
-                if(low ==-1 || high ==n) break;
-            }
-            String pallindrome = s.substring(low+1,high);
-            if(pallindrome.length() > LPS.length()) LPS=pallindrome;
-
-            low= i-1;
-            high =i;
-            while(s.charAt(low)== s.charAt(high)){
-                low--;
-                high++;
-
-                if(low ==-1 || high ==n)break;
-            }
-            pallindrome = s.substring(low+1,high);
-            if(pallindrome.length() >LPS.length()) LPS=pallindrome;
+        int n =s.length();
+        int maxLen = Integer.MIN_VALUE;
+        int sp=0;
+        t = new int [n][n];
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(t[i], -1);
         }
-        return LPS;
+
+        for(int i=0;i<n;i++){
+            for(int j=i;j<n;j++){
+                if(solve(s,i,j) == true){
+                    if(j-i+1>maxLen){
+                        maxLen =j-i+1;
+                        sp=i;
+                    }
+                }
+            }
+        }return s.substring(sp,sp+maxLen);
     }
 }
